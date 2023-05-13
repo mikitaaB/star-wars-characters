@@ -1,0 +1,17 @@
+.listItem {
+	border: 2px solid #000000;
+	margin: 15px 0;
+	border-radius: 10px;
+}
+
+.listItem a {
+	text-decoration: none;
+}
+
+.listItem:hover {
+	border: 2px solid #028400;
+}
+
+.listItem__text {
+	color: #000000;
+}
