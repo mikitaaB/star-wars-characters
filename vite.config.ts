@@ -4,6 +4,6 @@ import eslint from "vite-plugin-eslint";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-	base: "/star-wars-characters",
+	base: "https://mikitaab.github.io/star-wars-characters/",
 	plugins: [react(), eslint()],
 });
