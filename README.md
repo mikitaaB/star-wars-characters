@@ -1,8 +1,11 @@
 # star-wars-characters
 
-Install all dependencies:
+### How to setup
+1. Install node.js: https://nodejs.org/en/ (LTS)
+2. Install all dependencies:
 `yarn`
 
+### How to run
 To run the app in **development** mode:
 
 ```
