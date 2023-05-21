@@ -2,7 +2,7 @@ import Container from "@mui/material/Container/Container";
 import Box from "@mui/material/Box/Box";
 import { Outlet } from "react-router-dom";
 
-export const Layout = () => (
+const Layout = () => (
 	<Container maxWidth="md">
 		<Box sx={{ my: 4 }}>
 			<header>
@@ -12,3 +12,5 @@ export const Layout = () => (
 		</Box>
 	</Container>
 );
+
+export default Layout;

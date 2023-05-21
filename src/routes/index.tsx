@@ -1,18 +1,24 @@
+import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 
-import { BioPage } from "../pages/BioPage/BioPage";
-import { ErrorPage } from "../pages/ErrorPage/ErrorPage";
-import { MainPage } from "../pages/MainPage/MainPage";
-import { Layout } from "../components/Layout/Layout";
+const BioPage = lazy(() => import("../pages/BioPage/BioPage"));
+const ErrorPage = lazy(() => import("../pages/ErrorPage/ErrorPage"));
+const MainPage = lazy(() => import("../pages/MainPage/MainPage"));
+const Layout = lazy(() => import("../components/Layout/Layout"));
 
 export const Pages = () => (
 	<div>
-		<Routes>
-			<Route path="/" element={<Layout />}>
-				<Route path="/" element={<MainPage />} />
-				<Route path="/character/:characterId" element={<BioPage />} />
-			</Route>
-			<Route path="*" element={<ErrorPage />} />
-		</Routes>
+		<Suspense fallback={<div>Loading...</div>}>
+			<Routes>
+				<Route path="/" element={<Layout />}>
+					<Route path="/" element={<MainPage />} />
+					<Route
+						path="/character/:characterId"
+						element={<BioPage />}
+					/>
+				</Route>
+				<Route path="*" element={<ErrorPage />} />
+			</Routes>
+		</Suspense>
 	</div>
 );

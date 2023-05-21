@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { startTransition, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
@@ -30,7 +30,7 @@ import {
 import { BioEditPanel } from "../../components/BioEditPanel/BioEditPanel";
 import { AppDispatch } from "../../state/store";
 
-export const BioPage = () => {
+const BioPage = () => {
 	const navigate = useNavigate();
 	const { characterId } = useParams();
 
@@ -53,12 +53,17 @@ export const BioPage = () => {
 	}, [characterId, dispatch]);
 
 	useEffect(() => {
-		if (characterInfo?.films?.length || characterFilms.length === 0) {
-			dispatch(fetchCharacterFilms(characterInfo.films));
-		}
-		if (characterInfo.species?.length || characterSpecies.length === 0) {
-			dispatch(fetchCharacterSpecies(characterInfo.species));
-		}
+		startTransition(() => {
+			if (characterInfo?.films?.length || characterFilms.length === 0) {
+				dispatch(fetchCharacterFilms(characterInfo.films));
+			}
+			if (
+				characterInfo.species?.length ||
+				characterSpecies.length === 0
+			) {
+				dispatch(fetchCharacterSpecies(characterInfo.species));
+			}
+		});
 	}, [characterInfo, dispatch]);
 
 	useEffect(() => {
@@ -127,3 +132,5 @@ export const BioPage = () => {
 		</div>
 	);
 };
+
+export default BioPage;

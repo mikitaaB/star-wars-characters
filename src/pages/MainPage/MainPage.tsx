@@ -18,7 +18,7 @@ import {
 	selectStatusLoading,
 } from "../../state/selectors/charactersSelector";
 
-export const MainPage = () => {
+const MainPage = () => {
 	const charactersData = useSelector(selectAllCharacters);
 	const charactersStatusLoading = useSelector(selectStatusLoading);
 	const currentPage = useSelector(selectCurrentPage);
@@ -56,3 +56,5 @@ export const MainPage = () => {
 		</>
 	);
 };
+
+export default MainPage;
