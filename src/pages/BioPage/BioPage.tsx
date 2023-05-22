@@ -48,6 +48,8 @@ const BioPage = () => {
 
 	useEffect(() => {
 		if (characterId && typeof characterId === "string") {
+			dispatch(setZeroFilms());
+			dispatch(setZeroSpecies());
 			dispatch(fetchCharacterInfo(characterId));
 		}
 	}, [characterId, dispatch]);
@@ -65,11 +67,6 @@ const BioPage = () => {
 			}
 		});
 	}, [characterInfo, dispatch]);
-
-	useEffect(() => {
-		setZeroFilms();
-		setZeroSpecies();
-	}, []);
 
 	return (
 		<div>

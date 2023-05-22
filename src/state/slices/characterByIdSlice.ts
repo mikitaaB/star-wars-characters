@@ -98,22 +98,10 @@ const characterByIdSlice = createSlice({
 			};
 		},
 		setZeroFilms(state) {
-			return {
-				...state,
-				itemsInfo: {
-					...state.itemsInfo,
-					films: [],
-				},
-			};
+			return { ...state, itemsFilms: [] };
 		},
 		setZeroSpecies(state) {
-			return {
-				...state,
-				itemsInfo: {
-					...state.itemsInfo,
-					species: [],
-				},
-			};
+			return { ...state, itemsSpecies: [] };
 		},
 	},
 	extraReducers: builder => {
