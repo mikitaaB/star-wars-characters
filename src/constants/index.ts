@@ -7,3 +7,8 @@ export const characterStatusErrorText =
 	"An error occured while fetching data about character";
 export const nothingFound = "No results found";
 export const searchFieldPlaceholder = "Search character by name";
+
+export const statusIdle = "idle";
+export const statusFailed = "failed";
+export const statusLoading = "loading";
+export const statusSucceeded = "succeeded";

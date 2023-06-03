@@ -1,11 +1,17 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchSWData } from "../../servise/fetchData";
+import { fetchSWData } from "../../service/fetchData";
 import {
 	CharacterBioInfo,
 	CharacterByIdInitialType,
 	FilmType,
 	SpecieType,
 } from "../../types";
+import {
+	statusFailed,
+	statusIdle,
+	statusLoading,
+	statusSucceeded,
+} from "../../constants";
 
 export const fetchCharacterInfo = createAsyncThunk(
 	"characterById/fetchCharacterInfo",
@@ -77,11 +83,11 @@ const initialState: CharacterByIdInitialType = {
 		edited: "",
 		url: "",
 	},
-	statusInfo: "idle",
+	statusInfo: statusIdle,
 	itemsFilms: [],
-	statusFilms: "idle",
+	statusFilms: statusIdle,
 	itemsSpecies: [],
-	statusSpecies: "idle",
+	statusSpecies: statusIdle,
 };
 
 const characterByIdSlice = createSlice({
@@ -107,44 +113,44 @@ const characterByIdSlice = createSlice({
 	extraReducers: builder => {
 		builder.addCase(fetchCharacterInfo.pending, state => ({
 			...state,
-			statusInfo: "loading",
+			statusInfo: statusLoading,
 		}));
 		builder.addCase(fetchCharacterInfo.fulfilled, (state, action) => ({
 			...state,
-			statusInfo: "succeeded",
+			statusInfo: statusSucceeded,
 			itemsInfo: action.payload,
 		}));
 		builder.addCase(fetchCharacterInfo.rejected, state => ({
 			...state,
-			statusInfo: "failed",
+			statusInfo: statusFailed,
 		}));
 
 		builder.addCase(fetchCharacterFilms.pending, state => ({
 			...state,
-			statusFilms: "loading",
+			statusFilms: statusLoading,
 		}));
 		builder.addCase(fetchCharacterFilms.fulfilled, (state, action) => ({
 			...state,
-			statusFilms: "succeeded",
+			statusFilms: statusSucceeded,
 			itemsFilms: action.payload.results,
 		}));
 		builder.addCase(fetchCharacterFilms.rejected, state => ({
 			...state,
-			statusFilms: "failed",
+			statusFilms: statusFailed,
 		}));
 
 		builder.addCase(fetchCharacterSpecies.pending, state => ({
 			...state,
-			statusSpecies: "loading",
+			statusSpecies: statusLoading,
 		}));
 		builder.addCase(fetchCharacterSpecies.fulfilled, (state, action) => ({
 			...state,
-			statusSpecies: "succeeded",
+			statusSpecies: statusSucceeded,
 			itemsSpecies: action.payload.results,
 		}));
 		builder.addCase(fetchCharacterSpecies.rejected, state => ({
 			...state,
-			statusSpecies: "failed",
+			statusSpecies: statusFailed,
 		}));
 	},
 });

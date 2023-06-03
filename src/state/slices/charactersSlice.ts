@@ -1,6 +1,16 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { fetchSWData } from "../../servise/fetchData";
-import { FetchPeopleType, CharactersInitialType } from "../../types";
+import { fetchSWData } from "../../service/fetchData";
+import {
+	FetchPeopleType,
+	CharactersInitialType,
+	CharacterType,
+} from "../../types";
+import {
+	statusFailed,
+	statusIdle,
+	statusLoading,
+	statusSucceeded,
+} from "../../constants";
 
 const pageSize = 10;
 
@@ -19,7 +29,13 @@ export const fetchCharacters = createAsyncThunk(
 				search: searchValue,
 				pageSize,
 			});
-			return response;
+			return {
+				...response,
+				results: response.results.map((character: CharacterType) => {
+					const id = character.url.split("/").at(-2);
+					return { id, name: character.name };
+				}),
+			};
 		} catch (error) {
 			console.error(error);
 			throw error;
@@ -29,7 +45,7 @@ export const fetchCharacters = createAsyncThunk(
 
 const initialState: CharactersInitialType = {
 	items: [],
-	status: "idle",
+	status: statusIdle,
 	currentPage: 1,
 	searchValue: "",
 	pageCount: 1,
@@ -49,17 +65,17 @@ const charactersSlice = createSlice({
 	extraReducers: builder => {
 		builder.addCase(fetchCharacters.pending, state => ({
 			...state,
-			status: "loading",
+			status: statusLoading,
 		}));
 		builder.addCase(fetchCharacters.fulfilled, (state, action) => ({
 			...state,
-			status: "succeeded",
+			status: statusSucceeded,
 			items: action.payload.results,
 			pageCount: Math.ceil(action.payload.count / pageSize),
 		}));
 		builder.addCase(fetchCharacters.rejected, state => ({
 			...state,
-			status: "failed",
+			status: statusFailed,
 		}));
 	},
 });

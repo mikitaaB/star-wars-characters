@@ -1,6 +1,6 @@
 import { startTransition, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
 import List from "@mui/material/List/List";
 import Typography from "@mui/material/Typography/Typography";
@@ -11,6 +11,9 @@ import {
 	characterStatusErrorText,
 	filmsErrorText,
 	speciesErrorText,
+	statusFailed,
+	statusLoading,
+	statusSucceeded,
 } from "../../constants";
 import {
 	selectCharacterFilms,
@@ -34,11 +37,11 @@ const BioPage = () => {
 	const navigate = useNavigate();
 	const { characterId } = useParams();
 
-	const characterInfo = useSelector(selectCharacterInfo);
+	const characterInfo = useSelector(selectCharacterInfo, shallowEqual);
 	const statusInfoLoading = useSelector(selectStatusInfoLoading);
-	const characterFilms = useSelector(selectCharacterFilms);
+	const characterFilms = useSelector(selectCharacterFilms, shallowEqual);
 	const statusFilmsLoading = useSelector(selectStatusFilmsLoading);
-	const characterSpecies = useSelector(selectCharacterSpecies);
+	const characterSpecies = useSelector(selectCharacterSpecies, shallowEqual);
 	const statusSpeciesLoading = useSelector(selectStatusSpeciesLoading);
 	const dispatch = useDispatch<AppDispatch>();
 
@@ -75,12 +78,12 @@ const BioPage = () => {
 			</Link>
 
 			<div>
-				{statusInfoLoading === "failed" && (
+				{statusInfoLoading === statusFailed && (
 					<p>{characterStatusErrorText}</p>
 				)}
-				{statusInfoLoading === "loading" && <CircularProgress />}
+				{statusInfoLoading === statusLoading && <CircularProgress />}
 			</div>
-			{statusInfoLoading === "succeeded" &&
+			{statusInfoLoading === statusSucceeded &&
 				characterInfo &&
 				typeof characterInfo === "object" &&
 				Object.keys(characterInfo).length && (
@@ -88,10 +91,10 @@ const BioPage = () => {
 				)}
 
 			<div>
-				{statusFilmsLoading === "failed" && <p>{filmsErrorText}</p>}
-				{statusFilmsLoading === "loading" && <CircularProgress />}
+				{statusFilmsLoading === statusFailed && <p>{filmsErrorText}</p>}
+				{statusFilmsLoading === statusLoading && <CircularProgress />}
 			</div>
-			{statusFilmsLoading === "succeeded" &&
+			{statusFilmsLoading === statusSucceeded &&
 				characterFilms &&
 				characterFilms.length > 0 && (
 					<>
@@ -108,10 +111,12 @@ const BioPage = () => {
 				)}
 
 			<div>
-				{statusSpeciesLoading === "failed" && <p>{speciesErrorText}</p>}
-				{statusSpeciesLoading === "loading" && <CircularProgress />}
+				{statusSpeciesLoading === statusFailed && (
+					<p>{speciesErrorText}</p>
+				)}
+				{statusSpeciesLoading === statusLoading && <CircularProgress />}
 			</div>
-			{statusSpeciesLoading === "succeeded" &&
+			{statusSpeciesLoading === statusSucceeded &&
 				characterSpecies &&
 				characterSpecies.length > 0 && (
 					<>

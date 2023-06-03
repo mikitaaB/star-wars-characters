@@ -2,18 +2,18 @@ import { memo } from "react";
 import { Link } from "react-router-dom";
 import ListItem from "@mui/material/ListItem/ListItem";
 import ListItemText from "@mui/material/ListItemText/ListItemText";
-import { CharacterItemType } from "../../types";
-import s from "./characterItem.module.css";
+import { CharacterItemType } from "../../../types";
+import s from "./characterListItem.module.css";
 
-export const CharacterItem = memo(function CharacterItem({
+export const CharacterListItem = memo(function CharacterListItem({
 	name,
-	characterId,
+	id,
 }: CharacterItemType) {
 	return (
 		<ListItem
 			component={Link}
-			to={`/character/${characterId}`}
-			key={characterId}
+			to={`/character/${id}`}
+			key={id}
 			className={s.listItem}
 		>
 			<ListItemText primary={name} className={s.listItem__text} />

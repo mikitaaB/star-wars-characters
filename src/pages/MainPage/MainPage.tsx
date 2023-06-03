@@ -1,10 +1,13 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import List from "@mui/material/List/List";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress/CircularProgress";
-import { CharacterItem } from "../../components/CharacterItem/CharacterItem";
-import { CharacterType } from "../../types";
-import { mainErrorText, nothingFound } from "../../constants";
+import {
+	mainErrorText,
+	nothingFound,
+	statusFailed,
+	statusLoading,
+	statusSucceeded,
+} from "../../constants";
 import { SearchField } from "../../components/SearchField/SearchField";
 import { Paginator } from "../../components/Paginator/Paginator";
 import { AppDispatch } from "../../state/store";
@@ -17,9 +20,10 @@ import {
 	selectSearchValue,
 	selectStatusLoading,
 } from "../../state/selectors/charactersSelector";
+import { CharactersList } from "../../components/CharactersList/CharactersList";
 
 const MainPage = () => {
-	const charactersData = useSelector(selectAllCharacters);
+	const charactersData = useSelector(selectAllCharacters, shallowEqual);
 	const charactersStatusLoading = useSelector(selectStatusLoading);
 	const currentPage = useSelector(selectCurrentPage);
 	const pageCount = useSelector(selectPageCount);
@@ -35,22 +39,18 @@ const MainPage = () => {
 			<Paginator currentPage={currentPage} pageCount={pageCount} />
 			<SearchField searchValue={searchValue} />
 			<div className={s.specialStatuses}>
-				{charactersStatusLoading === "failed" && <p>{mainErrorText}</p>}
-				{charactersStatusLoading === "loading" && <CircularProgress />}
-				{charactersStatusLoading === "succeeded" &&
+				{charactersStatusLoading === statusFailed && (
+					<p>{mainErrorText}</p>
+				)}
+				{charactersStatusLoading === statusLoading && (
+					<CircularProgress />
+				)}
+				{charactersStatusLoading === statusSucceeded &&
 					charactersData.length === 0 && <p>{nothingFound}</p>}
 			</div>
-			{charactersStatusLoading === "succeeded" &&
+			{charactersStatusLoading === statusSucceeded &&
 				charactersData.length > 0 && (
-					<List>
-						{charactersData.map((character: CharacterType) => (
-							<CharacterItem
-								key={character.url.split("/").at(-2)}
-								name={character.name}
-								characterId={character.url.split("/").at(-2)}
-							/>
-						))}
-					</List>
+					<CharactersList data={charactersData} />
 				)}
 			<Paginator currentPage={currentPage} pageCount={pageCount} />
 		</>

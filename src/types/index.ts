@@ -1,4 +1,10 @@
 import { ChangeEvent } from "react";
+import {
+	statusIdle,
+	statusLoading,
+	statusSucceeded,
+	statusFailed,
+} from "../constants";
 
 export type CharacterType = {
 	name: string;
@@ -19,9 +25,13 @@ export type CharacterType = {
 	url: string;
 };
 
+export type CharactersListPropsType = {
+	data: CharacterItemType[];
+};
+
 export type CharacterItemType = {
 	name: string;
-	characterId: string | undefined;
+	id: string | undefined;
 };
 
 export type FetchParamsType = {
@@ -97,10 +107,14 @@ export type BioInputType = {
 	handleChange: (e: ChangeEvent<unknown>) => void;
 };
 
-export type StatusLoadingType = "idle" | "loading" | "succeeded" | "failed";
+export type StatusLoadingType =
+	| typeof statusIdle
+	| typeof statusLoading
+	| typeof statusSucceeded
+	| typeof statusFailed;
 
 export type CharactersInitialType = {
-	items: CharacterType[];
+	items: CharacterItemType[];
 	status: StatusLoadingType;
 	currentPage: number;
 	searchValue: string;
@@ -111,7 +125,7 @@ export type FetchPeopleType = {
 	count: number;
 	next: string | null;
 	previous: string | null;
-	results: CharacterType[];
+	results: CharacterItemType[];
 };
 
 export type CharacterBioInfo = {
